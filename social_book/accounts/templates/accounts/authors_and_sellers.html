@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Authors and Sellers
+{% endblock %}
+
+{% block content %}
+<h2>Authors and Sellers</h2>
+
+<form method="get">
+    {{ filter.form.as_p }}
+    <button type="submit">Filter</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Age</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in filter.qs %}
+        <tr>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.address }}</td>
+            <td>{{ user.age }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No authors or sellers found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

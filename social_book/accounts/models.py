@@ -64,7 +64,7 @@ class CustomUser(AbstractUser):
     # Remove username field and use email instead
     username = None
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name']  # 'name' is required along with email for superusers
+    REQUIRED_FIELDS = ['name']  # 'name' is required along with email for superusers #noqa
 
     # Link the custom user manager
     objects = CustomUserManager()

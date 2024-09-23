@@ -1,4 +1,11 @@
-<h2>Welcome to Social Book!</h2>
+{% extends 'base.html' %}
+
+{% block title %}Home - Social Book{% endblock %}
+
+{% block content %}
+<h2>Home Page</h2>
+<p>Welcome to the Social Book platform! Explore our collection of authors and sellers.</p>
 <p>You are logged in as {{ request.user.name }}.</p>
 {% comment %} <p>You are logged in as {{ request.user.email.split:"@"|first }}.</p> {% endcomment %}
-
+<!-- Add more content specific to the home page here -->
+{% endblock %}
