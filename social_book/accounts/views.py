@@ -6,6 +6,8 @@ from .models import CustomUser
 import django_filters
 from django_filters.views import FilterView
 from django.core.paginator import Paginator
+from .models import UploadedFiles
+from .forms import UploadedFilesForm
 
 
 # def register(request):
@@ -78,3 +80,18 @@ def user_dashboard(request):
     return render(request, 'accounts/user_dashboard.html', {
         'users': users
     })
+
+
+# Upload Books and Files
+def upload_books(request):
+    if request.method == 'POST':
+        form = UploadedFilesForm(request.POST, request.FILES)
+        if form.is_valid():
+            uploaded_file = form.save()
+            print(f"Uploaded File: {uploaded_file.file.url}")  # Debugging line
+            return redirect('upload_books')
+    else:
+        form = UploadedFilesForm()
+
+    uploaded_files = UploadedFiles.objects.all()
+    return render(request, 'accounts/upload_books.html', {'form': form, 'uploaded_files': uploaded_files}) # noqa

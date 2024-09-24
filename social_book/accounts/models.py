@@ -64,7 +64,7 @@ class CustomUser(AbstractUser):
     # Remove username field and use email instead
     username = None
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name']  # 'name' is required along with email for superusers #noqa
+    REQUIRED_FIELDS = ['name']  # 'name' is required along with email for superusers # noqa
 
     # Link the custom user manager
     objects = CustomUserManager()
@@ -79,3 +79,21 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+
+
+class UploadedFiles(models.Model):
+    VISIBILITY_CHOICES = [
+        ('PUBLIC', 'Public'),
+        ('PRIVATE', 'Private'),
+    ]
+
+    file = models.FileField(upload_to='uploads/', blank=False, null=False)
+    title = models.CharField(max_length=255, blank=False)
+    description = models.TextField(blank=True)
+    visibility = models.CharField(max_length=7, choices=VISIBILITY_CHOICES, default='PUBLIC') # noqa
+    cost = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    year_published = models.IntegerField(blank=True, null=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title

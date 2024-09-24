@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Upload Books
+{% endblock %}
+
+{% block content %}
+<!-- Inline CSS for styling the form and uploaded files section -->
+<style>
+    .upload-form {
+        max-width: 600px; /* Max width for the form */
+        margin: 20px auto; /* Center the form */
+        padding: 20px;
+        border: 1px solid #ddd; /* Border for the form */
+        border-radius: 5px; /* Rounded corners */
+        background-color: #f9f9f9; /* Light background */
+    }
+
+    .upload-form div {
+        margin-bottom: 15px; /* Space between fields */
+    }
+
+    .upload-form label {
+        display: block; /* Make labels block elements */
+        margin-bottom: 5px; /* Space below labels */
+    }
+
+    .uploaded-files {
+        max-width: 600px; /* Max width for the uploaded files list */
+        margin: 20px auto; /* Center the list */
+    }
+
+    .uploaded-files ul {
+        list-style-type: none; /* Remove bullets from list */
+        padding: 0; /* Remove padding */
+    }
+
+    .uploaded-files li {
+        margin-bottom: 10px; /* Space between list items */
+    }
+</style>
+
+<h1>Upload Books</h1>
+<form method="POST" enctype="multipart/form-data" class="upload-form">
+    {% csrf_token %}
+    <div>
+        <label for="file">Upload File (PDF/JPEG only):</label>
+        <input type="file" name="file" id="file" accept=".pdf,.jpeg,.jpg" required>
+    </div>
+
+    <div>
+        <label for="title">Title:</label>
+        <input type="text" name="title" id="title" required>
+    </div>
+
+    <div>
+        <label for="description">Description:</label>
+        <textarea name="description" id="description"></textarea>
+    </div>
+
+    <div>
+        <label for="visibility">Visibility:</label>
+        <select name="visibility" id="visibility">
+            <option value="PUBLIC">Public</option>
+            <option value="PRIVATE">Private</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="cost">Cost:</label>
+        <input type="number" name="cost" id="cost" step="0.01" value="0.00">
+    </div>
+
+    <div>
+        <label for="year_published">Year of Publication:</label>
+        <input type="number" name="year_published" id="year_published">
+    </div>
+
+    <button type="submit">Upload</button>
+</form>
+
+<h1>Uploaded Books</h1>
+<div class="uploaded-files">
+    <ul>
+        {% for file in uploaded_files %}
+            <li class="file-item">
+                <div class="file-info">
+                    <p><strong>Title:</strong> {{ file.title }}</p>
+                    <p><strong>Year Published:</strong> {{ file.year_published }}</p>
+                    <p><strong>Description:</strong> {{ file.description }}</p>
+                    <p><strong>Visibility:</strong> {{ file.visibility|title }}</p>
+                    <p><strong>Cost:</strong> INR{{ file.cost }}</p>
+                </div>
+
+                <div class="file-actions">
+                    <a href="/accounts{{ file.file.url }}" target="_blank" class="view-file-btn">View File</a>
+                </div>
+            </li>
+        {% empty %}
+            <li>No files uploaded yet.</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<!-- CSS for styling the uploaded files section -->
+<style>
+    .uploaded-files {
+        max-width: 600px; /* Max width for the uploaded files list */
+        margin: 20px auto; /* Center the list */
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        background-color: #f9f9f9; /* Light background */
+    }
+
+    .uploaded-files ul {
+        list-style-type: none; /* Remove bullets from list */
+        padding: 0; /* Remove padding */
+    }
+
+    .uploaded-files li {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .uploaded-files li:last-child {
+        border-bottom: none; /* Remove border for the last item */
+    }
+
+    .file-info {
+        flex: 1;
+        padding-right: 20px;
+    }
+
+    .file-info p {
+        margin: 5px 0; /* Add space between meta info */
+        font-size: 14px;
+        color: #333;
+    }
+
+    .file-info strong {
+        color: #555;
+    }
+
+    .file-actions {
+        text-align: right;
+    }
+
+    .view-file-btn {
+        background-color: #007bff;
+        color: #fff;
+        padding: 8px 12px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 14px;
+        transition: background-color 0.3s;
+    }
+
+    .view-file-btn:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+
+{% comment %} <h2>Your Uploaded Files</h2>
+<div class="uploaded-files">
+    <ul>
+        {% for file in uploaded_files %}
+            <li>
+                <strong>{{ file.title }}</strong> ({{ file.year_published }}): {{ file.description }} -
+                <a href="{{ file.file.url }}" target="_blank">View File</a>
+            </li>
+        {% empty %}
+            <li>No files uploaded yet.</li>
+        {% endfor %}
+    </ul>
+</div> {% endcomment %}
+{% endblock %}
