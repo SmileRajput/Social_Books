@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <style>
+        /* Inline CSS for pagination */
+        .pagination {
+            display: flex;
+            list-style-type: none;
+            padding: 0;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination a {
+            padding: 8px 12px;
+            text-decoration: none;
+            color: #007bff;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        .pagination a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        .pagination .active a {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .pagination .disabled a {
+            color: #6c757d;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Registered Users</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Date Joined</th>
+                <th>Is Active</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.date_joined }}</td>
+                <td>{{ user.is_active }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="pagination-container">
+        <ul class="pagination">
+            {% if users.has_previous %}
+            <li><a href="?page=1">First</a></li>
+            <li><a href="?page={{ users.previous_page_number }}">Previous</a></li>
+            {% else %}
+            <li class="disabled"><a href="#">First</a></li>
+            <li class="disabled"><a href="#">Previous</a></li>
+            {% endif %}
+
+            {% for num in users.paginator.page_range %}
+                {% if users.number == num %}
+                    <li class="active"><a href="#">{{ num }}</a></li>
+                {% elif num > users.number|add:-3 and num < users.number|add:3 %}
+                    <li><a href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if users.has_next %}
+            <li><a href="?page={{ users.next_page_number }}">Next</a></li>
+            <li><a href="?page={{ users.paginator.num_pages }}">Last</a></li>
+            {% else %}
+            <li class="disabled"><a href="#">Next</a></li>
+            <li class="disabled"><a href="#">Last</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</body>
+</html>
+{% endblock %}

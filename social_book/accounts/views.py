@@ -5,6 +5,7 @@ from .forms import CustomUserCreationForm
 from .models import CustomUser
 import django_filters
 from django_filters.views import FilterView
+from django.core.paginator import Paginator
 
 
 # def register(request):
@@ -63,4 +64,17 @@ def authors_and_sellers(request):
 
     return render(request, 'accounts/authors_and_sellers.html', {
         'filter': user_filter
+    })
+
+
+# Dashboard to view all registered user
+def user_dashboard(request):
+    users_list = CustomUser.objects.all()
+    paginator = Paginator(users_list, 5)  # Show 10 users per page
+
+    page_number = request.GET.get('page')
+    users = paginator.get_page(page_number)
+
+    return render(request, 'accounts/user_dashboard.html', {
+        'users': users
     })
