@@ -4,8 +4,32 @@
 
 {% block content %}
 <h2>Home Page</h2>
+
+{% if user.is_authenticated %}
+    <p>Welcome to the Social Book platform! Explore our collection of authors and sellers.</p>
+    <p>You are logged in as {{ request.user.name }}.</p>
+    {% comment %} 
+    <p>You are logged in as {{ request.user.email.split:"@"|first }}.</p> 
+    {% endcomment %}
+{% else %}
+    <p>Welcome to the Social Book platform! Please log in to explore our collection of authors and sellers.</p>
+    <a href="/accounts/login/" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+        Login
+    </a>
+{% endif %}
+
+<!-- Add more content specific to the home page here -->
+
+{% endblock %}
+
+
+
+{% comment %} {% extends 'base.html' %}
+
+{% block title %}Home - Social Book{% endblock %}
+
+{% block content %}
+<h2>Home Page</h2>
 <p>Welcome to the Social Book platform! Explore our collection of authors and sellers.</p>
 <p>You are logged in as {{ request.user.name }}.</p>
-{% comment %} <p>You are logged in as {{ request.user.email.split:"@"|first }}.</p> {% endcomment %}
-<!-- Add more content specific to the home page here -->
-{% endblock %}
+{% endblock %} {% endcomment %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Book Dashboard
+{% endblock %}
+
+{% block content %}
+<h1>My Books Dashboard</h1>
+
+<style>
+    .book-list {
+        max-width: 600px; /* Max width for the book list */
+        margin: 20px auto; /* Center the list */
+        padding: 0;
+        list-style: none; /* Remove default list styles */
+    }
+
+    .book-list li {
+        padding: 10px;
+        border-bottom: 1px solid #ddd; /* Divider between books */
+    }
+
+    .book-list li:last-child {
+        border-bottom: none; /* Remove divider from last item */
+    }
+
+    .book-list a {
+        color: #007bff; /* Link color */
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .book-list a:hover {
+        text-decoration: underline; /* Underline on hover */
+    }
+
+    .no-books {
+        text-align: center;
+        font-size: 18px;
+        color: #666;
+    }
+</style>
+
+<div class="book-dashboard">
+    {% if uploaded_files %}
+        <ul class="book-list">
+            {% for file in uploaded_files %}
+                <li>
+                    <a href="/accounts{{ file.file.url }}">{{ file.title }}</a> - {{ file.description }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-books">No files uploaded. <a href="{% url 'upload_books' %}">Upload Books</a></p>
+    {% endif %}
+</div>
+
+{% endblock %}

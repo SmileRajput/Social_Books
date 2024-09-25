@@ -121,3 +121,19 @@ class UserUploadedFilesView(generics.ListAPIView):
     def get_queryset(self):
         # Return only files uploaded by the logged-in user
         return UploadedFiles.objects.filter(user=self.request.user)
+
+
+def my_books_dashboard(request):
+    if request.user.is_authenticated:
+        # Check if the user has uploaded any files
+        uploaded_files = UploadedFiles.objects.filter(user=request.user)
+
+        if uploaded_files.exists():
+            # User has uploaded files, render the dashboard
+            return render(request, 'accounts/my_books.html', {'uploaded_files': uploaded_files})
+        else:
+            # No files uploaded, redirect to Upload Books
+            return redirect('upload_books')
+    else:
+        # If the user is not authenticated, redirect to login
+        return redirect('login')  # Adjust according to your login URL name
