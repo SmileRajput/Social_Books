@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.timezone import now
 from datetime import date
 from django.contrib.auth.models import BaseUserManager
+from django.conf import settings
+from django.contrib.auth import get_user_model
 
 
 class CustomUserManager(BaseUserManager):
@@ -81,16 +83,43 @@ class CustomUser(AbstractUser):
         return self.email
 
 
+# class UploadedFiles(models.Model):
+#     VISIBILITY_CHOICES = [
+#         ('PUBLIC', 'Public'),
+#         ('PRIVATE', 'Private'),
+#     ]
+
+#     file = models.FileField(upload_to='uploads/', blank=False, null=False)
+#     title = models.CharField(max_length=255, blank=False)
+#     description = models.TextField(blank=True)
+#     visibility = models.CharField(max_length=7, choices=VISIBILITY_CHOICES, default='PUBLIC') # noqa
+#     cost = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+#     year_published = models.IntegerField(blank=True, null=True)
+#     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+#     def __str__(self):
+#         return self.title
+
+
 class UploadedFiles(models.Model):
     VISIBILITY_CHOICES = [
         ('PUBLIC', 'Public'),
         ('PRIVATE', 'Private'),
     ]
 
+    # Provide a default user to associate with existing files
+    def get_default_user():
+        return get_user_model().objects.first().id
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.CASCADE,
+        default=get_default_user  # Use a function to set the default user
+    )
     file = models.FileField(upload_to='uploads/', blank=False, null=False)
     title = models.CharField(max_length=255, blank=False)
     description = models.TextField(blank=True)
-    visibility = models.CharField(max_length=7, choices=VISIBILITY_CHOICES, default='PUBLIC') # noqa
+    visibility = models.CharField(max_length=7, choices=VISIBILITY_CHOICES, default='PUBLIC')  # noqa
     cost = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     year_published = models.IntegerField(blank=True, null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)

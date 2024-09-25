@@ -4,6 +4,7 @@ from .views import (
                     authors_and_sellers,
                     user_dashboard,
                     upload_books,
+                    UserUploadedFilesView
                     )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -14,6 +15,7 @@ urlpatterns = [
     path('authors-and-sellers/', authors_and_sellers, name='authors_and_sellers'), # noqa
     path('user_dashboard/', user_dashboard, name='user_dashboard'),
     path('upload_books/', upload_books, name='upload_books'),
+    path('my-files/', UserUploadedFilesView.as_view(), name='user-uploaded-files'), # noqa
 ]
 
 if settings.DEBUG:

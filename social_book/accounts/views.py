@@ -8,6 +8,8 @@ from django_filters.views import FilterView
 from django.core.paginator import Paginator
 from .models import UploadedFiles
 from .forms import UploadedFilesForm
+from rest_framework import generics, permissions
+from .serializers import UploadedFilesSerializer
 
 
 # def register(request):
@@ -83,15 +85,39 @@ def user_dashboard(request):
 
 
 # Upload Books and Files
+# def upload_books(request):
+#     if request.method == 'POST':
+#         form = UploadedFilesForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             uploaded_file = form.save()
+#             print(f"Uploaded File: {uploaded_file.file.url}")
+#             return redirect('upload_books')
+#     else:
+#         form = UploadedFilesForm()
+
+#     uploaded_files = UploadedFiles.objects.all()
+#     return render(request, 'accounts/upload_books.html', {'form': form, 'uploaded_files': uploaded_files}) # noqa
+
 def upload_books(request):
     if request.method == 'POST':
         form = UploadedFilesForm(request.POST, request.FILES)
         if form.is_valid():
-            uploaded_file = form.save()
+            uploaded_file = form.save(commit=False)  # Don't save yet
+            uploaded_file.user = request.user  # Associate the file with the logged-in user # noqa
+            uploaded_file.save()  # Now save the file with the user association
             print(f"Uploaded File: {uploaded_file.file.url}")  # Debugging line
             return redirect('upload_books')
     else:
         form = UploadedFilesForm()
 
-    uploaded_files = UploadedFiles.objects.all()
+    uploaded_files = UploadedFiles.objects.filter(user=request.user)  # Show only files uploaded by the logged-in user # noqa
     return render(request, 'accounts/upload_books.html', {'form': form, 'uploaded_files': uploaded_files}) # noqa
+
+
+class UserUploadedFilesView(generics.ListAPIView):
+    serializer_class = UploadedFilesSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        # Return only files uploaded by the logged-in user
+        return UploadedFiles.objects.filter(user=self.request.user)

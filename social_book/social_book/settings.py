@@ -87,6 +87,9 @@ REST_FRAMEWORK = {
 
 DJOSER = {
     'LOGIN_FIELD': 'username',
+    # 'USER_CREATE_PASSWORD_RETYPE': True,
+    # 'USERNAME_FIELD': 'email',
+    # 'LOGIN_FIELD': 'email',
 }
 
 # Ensure Token Authentication is enabled

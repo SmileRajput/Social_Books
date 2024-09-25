@@ -5,10 +5,45 @@
 {% block content %}
 
 <h2>Login</h2>
+<form method="POST" style="max-width: 400px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px;">
+    {% csrf_token %}
+
+    <div style="margin-bottom: 15px;">
+        {{ form.username.label }}<br>
+        <input type="text" name="{{ form.username.name }}" value="{{ form.username.value }}" placeholder="example@gmail.com" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;" {% if form.username.errors %}style="border-color: red;"{% endif %} /><br>
+        {% for error in form.username.errors %}
+            <span style="color: red;">{{ error }}</span><br>
+        {% endfor %}
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        {{ form.password.label }}<br>
+        <input type="password" name="{{ form.password.name }}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;" {% if form.password.errors %}style="border-color: red;"{% endif %} /><br>
+        {% for error in form.password.errors %}
+            <span style="color: red;">{{ error }}</span><br>
+        {% endfor %}
+    </div>
+
+    <button type="submit" style="background-color: #4CAF50; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">
+        Login
+    </button>
+</form>
+
+{% endblock %}
+
+
+
+{% comment %} {% extends 'base.html' %}
+
+{% block title %}Home - Social Book{% endblock %}
+
+{% block content %}
+
+<h2>Login</h2>
 <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Login</button>
 </form>
 
-{% endblock %}
+{% endblock %} {% endcomment %}
