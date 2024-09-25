@@ -10,6 +10,9 @@ from .models import UploadedFiles
 from .forms import UploadedFilesForm
 from rest_framework import generics, permissions
 from .serializers import UploadedFilesSerializer
+from django.core.mail import send_mail
+from django.http import HttpResponse
+from django.conf import settings
 
 
 # def register(request):
@@ -137,3 +140,15 @@ def my_books_dashboard(request):
     else:
         # If the user is not authenticated, redirect to login
         return redirect('login')  # Adjust according to your login URL name
+
+
+def send_email_view(request):
+    subject = 'Test Email'
+    message = 'This is a test email from Django!'
+    recipient_list = ['sumitrajput5013@gmail.com']
+
+    try:
+        send_mail(subject, message, settings.EMAIL_HOST_USER, recipient_list)
+        return HttpResponse('Email sent successfully!')
+    except Exception as e:
+        return HttpResponse(f'Failed to send email: {e}')

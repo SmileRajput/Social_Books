@@ -9,6 +9,7 @@ from .views import (
                     )
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import send_email_view
 
 urlpatterns = [
     path('register/', register, name='register'),
@@ -18,6 +19,7 @@ urlpatterns = [
     path('upload_books/', upload_books, name='upload_books'),
     path('my-files/', UserUploadedFilesView.as_view(), name='user-uploaded-files'), # noqa
     path('my-books/', my_books_dashboard, name='my_books_dashboard'),
+    path('send-email/', send_email_view, name='send_email'),
 ]
 
 if settings.DEBUG:
