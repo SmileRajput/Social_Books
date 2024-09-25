@@ -23,4 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),  # Include accounts app URLs
     path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'), # noqa
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.authtoken')),  # Enable token generation
 ]

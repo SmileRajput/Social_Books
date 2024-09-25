@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     # My apps
     'accounts',
     'django_filters',
+    'rest_framework',
+    'djoser',
 ]
 
 MIDDLEWARE = [
@@ -72,6 +74,25 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'social_book.wsgi.application'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
+DJOSER = {
+    'LOGIN_FIELD': 'username',
+}
+
+# Ensure Token Authentication is enabled
+INSTALLED_APPS += [
+    'rest_framework.authtoken',
+]
 
 
 # Database
