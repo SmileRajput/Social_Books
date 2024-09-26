@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}OTP Verification{% endblock %}
+
+{% block content %}
+<h2>Enter OTP</h2>
+<form method="POST">
+    {% csrf_token %}
+    <div style="margin-bottom: 15px;">
+        <label for="otp">OTP:</label><br>
+        <input type="text" name="otp" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+    </div>
+    <button type="submit" style="background-color: #4CAF50; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">
+        Verify OTP
+    </button>
+</form>
+{% endblock %}

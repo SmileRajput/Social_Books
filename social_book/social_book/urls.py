@@ -17,12 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
-
+from accounts.views import CustomLoginView, otp_verification_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),  # Include accounts app URLs
-    path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'), # noqa
+    # path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'), # noqa
+    path('accounts/login/', CustomLoginView.as_view(template_name='registration/login.html'), name='login'), # noqa
+    path('accounts/otp-verification/', otp_verification_view, name='otp_verification'), # noqa
 
     # Djoser Authentication
     path('auth/', include('djoser.urls')),

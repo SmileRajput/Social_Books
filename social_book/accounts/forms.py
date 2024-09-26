@@ -14,7 +14,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm):
         model = CustomUser
-        fields = ('email', 'name', 'address', 'birth_year', 'public_visibility')
+        fields = ('email', 'name', 'address', 'birth_year', 'public_visibility') # noqa
 
 
 class CustomUserChangeForm(UserChangeForm):
