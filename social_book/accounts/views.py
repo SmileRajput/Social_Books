@@ -90,6 +90,16 @@ def user_dashboard(request):
         'users': users
     })
 
+# def dashboard(request):
+#     users_list = CustomUser.objects.all()
+#     paginator = Paginator(users_list, 5)  # Show 10 users per page
+
+#     page_number = request.GET.get('page')
+#     users = paginator.get_page(page_number)
+
+#     return render(request, 'accounts/dashboard.html', {
+#         'users': users
+#     })
 
 # Upload Books and Files
 # def upload_books(request):
@@ -169,6 +179,9 @@ class CustomLoginView(LoginView):
         
         # Generate OTP after successful login
         otp = generate_otp()
+
+        # Print the OTP to the console
+        print(f"Generated OTP for {self.request.user.email}: {otp}")
 
         # Save OTP in session
         self.request.session['otp'] = otp

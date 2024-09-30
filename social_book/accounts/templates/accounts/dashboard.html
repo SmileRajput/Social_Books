@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Dashboard</title>
+    
+    <!-- External CSS/JS links (ensure these work) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    
+    <style>
+        /* General reset and body styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        /* Header styles */
+        .header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            background-color: #fff;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .header .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Sidebar styles */
+        .left-side-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background-color: #333;
+            color: #fff;
+            padding-top: 60px; /* Space for the fixed header */
+            transition: transform 0.3s ease;
+            transform: translateX(0);
+            z-index: 999; /* Keeps it on top */
+            overflow-y: auto; /* Makes the sidebar scrollable independently */
+        }
+
+        .left-side-bar.closed {
+            transform: translateX(-100%);
+        }
+
+        /* Branding inside the sidebar */
+        .left-side-bar .branding {
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px 0;
+            color: #fff;
+            background-color: #444; /* Slightly darker background for branding */
+        }
+
+        .sidebar-menu ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            padding: 15px 20px;
+        }
+
+        .sidebar-menu a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+        }
+
+        .sidebar-menu a:hover {
+            background-color: #444;
+        }
+
+        /* Main content styles */
+        .main-container {
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+            margin-top: 60px; /* Space for the fixed header */
+        }
+
+        /* Sidebar always visible on desktop */
+        .left-side-bar + .main-container {
+            margin-left: 250px;
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 15px 0;
+            position: relative; /* Position relative to the flow of the document */
+            bottom: 0;
+            width: 100%;
+            margin-top: 20px; /* Space above footer */
+        }
+
+        /* Responsive media queries */
+        @media (max-width: 768px) {
+            .header .menu-icon {
+                display: block; /* Show hamburger icon on small screens */
+            }
+
+            .left-side-bar {
+                transform: translateX(-100%); /* Hidden by default */
+            }
+
+            .left-side-bar.open {
+                transform: translateX(0); /* Slide in when open */
+            }
+
+            /* Main content adjusts when sidebar is toggled on small screens */
+            .main-container {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header with Hamburger Icon -->
+    <div class="header">
+        <div class="menu-icon" id="menu-toggle">
+            <i class="ion-navicon-round"></i> <!-- Hamburger icon using Ionicons -->
+        </div>
+    </div>
+
+    <!-- Sidebar with Branding at the Top -->
+    <div class="left-side-bar" id="sidebar">
+        <div class="branding">
+            Social Book
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li><a href="/accounts/home">Home</a></li>
+                <li><a href="/accounts/user_dashboard">Dashboard</a></li>
+                <li><a href="/accounts/authors-and-sellers/">Authors and Sellers</a></li>
+                <li><a href="/accounts/upload_books">Upload Books</a></li>
+                <li><a href="/accounts/my-books">My Books</a></li>
+                <li><a href="/accounts/register/">Register</a></li>
+                <li><a href="/accounts/login/">Login</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-container" id="main-container">
+        <h1>Welcome to Social Book Dashboard</h1>
+        <p>This is your main content area. Resize the window to see the responsive sidebar in action.</p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Social Book</p>
+    </footer>
+
+    <!-- JavaScript to Toggle Sidebar -->
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const mainContainer = document.getElementById('main-container');
+        const menuToggle = document.getElementById('menu-toggle');
+
+        // Toggle sidebar visibility on mobile
+        menuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('open');
+            adjustMainContainerMargin();
+        });
+
+        // Function to adjust the main container's margin
+        function adjustMainContainerMargin() {
+            if (window.innerWidth <= 768) {
+                if (sidebar.classList.contains('open')) {
+                    mainContainer.style.marginLeft = "250px";
+                } else {
+                    mainContainer.style.marginLeft = "0";
+                }
+            } else {
+                // Reset the margin for desktop
+                mainContainer.style.marginLeft = "250px";
+            }
+        }
+
+        // Handle resizing the window
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                // Ensure sidebar is always open on larger screens
+                sidebar.classList.remove('open');
+            }
+            adjustMainContainerMargin(); // Adjust margin on resize
+        });
+
+        // Initial margin adjustment on page load
+        adjustMainContainerMargin();
+    </script>
+
+</body>
+</html>
